@@ -1,119 +1,107 @@
 ﻿#include <iostream>
-#include <typeinfo>
-/**
- * Базовый класс Состояния объявляет методы, которые должны реализовать все
- * Конкретные Состояния, а также предоставляет обратную ссылку на объект
- * Контекст, связанный с Состоянием. Эта обратная ссылка может использоваться
- * Состояниями для передачи Контекста другому Состоянию.
- */
 
-class Context;
+using namespace std;
 
-class State {
-	/**
-	 * @var Context
-	 */
-protected:
-	Context* context_;
-
+template <class T>
+class List
+{
 public:
-	virtual ~State() {
-	}
+	List();
+	~List();
 
-	void set_context(Context* context) {
-		this->context_ = context;
-	}
-
-	virtual void Handle1() = 0;
-	virtual void Handle2() = 0;
-};
-
-/**
- * Контекст определяет интерфейс, представляющий интерес для клиентов. Он также
- * хранит ссылку на экземпляр подкласса Состояния, который отображает текущее
- * состояние Контекста.
- */
-class Context {
-	/**
-	 * @var State Ссылка на текущее состояние Контекста.
-	 */
-private:
-	State* state_;
-
-public:
-	Context(State* state) : state_(nullptr) {
-		this->TransitionTo(state);
-	}
-	~Context() {
-		delete state_;
-	}
-	/**
-	 * Контекст позволяет изменять объект Состояния во время выполнения.
-	 */
-	void TransitionTo(State* state) {
-		std::cout << "Context: Transition to " << typeid(*state).name() << ".\n";
-		if (this->state_ != nullptr)
-			delete this->state_;
-		this->state_ = state;
-		this->state_->set_context(this);
-	}
-	/**
-	 * Контекст делегирует часть своего поведения текущему объекту Состояния.
-	 */
-	void Request1() {
-		this->state_->Handle1();
-	}
-	void Request2() {
-		this->state_->Handle2();
-	}
-};
-
-/**
- * Конкретные Состояния реализуют различные модели поведения, связанные с
- * состоянием Контекста.
- */
-
-class ConcreteStateA : public State {
-public:
-	void Handle1() override;
-
-	void Handle2() override {
-		std::cout << "ConcreteStateA handles request2.\n";
-	}
-};
-
-class ConcreteStateB : public State {
-public:
-	void Handle1() override {
-		std::cout << "ConcreteStateB handles request1.\n";
-	}
-	void Handle2() override {
-		std::cout << "ConcreteStateB handles request2.\n";
-		std::cout << "ConcreteStateB wants to change the state of the context.\n";
-		this->context_->TransitionTo(new ConcreteStateA);
-	}
-};
-
-void ConcreteStateA::Handle1() {
+	void push_back(T data);
+	int GetSize()
 	{
-		std::cout << "ConcreteStateA handles request1.\n";
-		std::cout << "ConcreteStateA wants to change the state of the context.\n";
+		return size;
+	}
+	T& operator [](const int index);
+private:
+	template <class T>
+	class Node
+	{
+	public:
+		Node* pNext;
+		T data;
 
-		this->context_->TransitionTo(new ConcreteStateB);
+		Node(T data = T(), Node* pNext = nullptr)
+		{
+			this->data = data;
+			this->pNext = pNext;
+		}
+	};
+
+	int size;
+	Node<T>* head;
+};
+
+template<class T>
+List<T>::List()
+{
+	size = 0;
+	head = nullptr;
+}
+
+template <class T>
+List<T> :: ~List()
+{
+
+}
+
+template<class T>
+void List<T>::push_back(T data)
+{
+	if (head == nullptr)
+	{
+		head = new Node<T>(data);
+	}
+	else
+	{
+		Node<T>* current = this->head;
+		
+		while (current->pNext != nullptr)
+		{
+			current = current->pNext;
+		}
+		current->pNext = new Node<T>(data);
+	}
+	size++;
+}
+
+template<class T>
+T& List<T>::operator[](const int index)
+{
+	Node<T>* current = this->head;
+	int counter = 0;
+
+	while (current != nullptr)
+	{
+		if (counter == index)
+		{
+			return current->data;
+		}
+		current = current->pNext;
+		counter++;
 	}
 }
 
-/**
- * Клиентский код.
- */
-void ClientCode() {
-	Context* context = new Context(new ConcreteStateA);
-	context->Request1();
-	context->Request2();
-	delete context;
-}
+int main()
+{
+	List <int> lst;
+	int size;
+	cin >> size;
+	for (int i = 0; i < size; i++)
+	{
+		lst.push_back(rand() % 10);
+	}
 
-int main() {
-	ClientCode();
+	for (int i = 0; i < lst.GetSize(); i++)
+	{
+		cout << lst[i] << endl;
+	}
+	
+	
+
 	return 0;
 }
+
+

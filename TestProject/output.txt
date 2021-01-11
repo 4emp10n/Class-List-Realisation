@@ -1,0 +1,4 @@
+VW;0;
+RENO;1; 
+PORCHE;5;
+LANOS;1;
