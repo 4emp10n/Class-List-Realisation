@@ -15,6 +15,7 @@ public:
 		return size;
 	}
 	void pop_front();
+	void clear();
 	T& operator [](const int index);
 private:
 	template <class T>
@@ -78,6 +79,15 @@ void List<T>::pop_front()
 }
 
 template<class T>
+void List<T>::clear()
+{
+	while (size)
+	{
+		pop_front();
+	}
+}
+
+template<class T>
 T& List<T>::operator[](const int index)
 {
 	Node<T>* current = this->head;
@@ -111,13 +121,19 @@ int main()
 	
 	cout << endl;
 	lst.pop_front();
-	cout << lst.GetSize() << endl;
+	cout << lst.GetSize() << endl << endl;
 	
 
 	for (int i = 0; i < lst.GetSize(); i++)
 	{
 		cout << lst[i] << endl;
 	}
+
+	lst.clear();
+	cout << endl;
+
+	cout<<lst.GetSize();
+
 
 
 	
