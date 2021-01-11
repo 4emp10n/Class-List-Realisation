@@ -16,6 +16,7 @@ public:
 	}
 	void pop_front();
 	void clear();
+	void push_front(T data);
 	T& operator [](const int index);
 private:
 	template <class T>
@@ -46,7 +47,7 @@ List<T>::List()
 template <class T>
 List<T> :: ~List()
 {
-
+	clear();
 }
 
 template<class T>
@@ -85,6 +86,14 @@ void List<T>::clear()
 	{
 		pop_front();
 	}
+}
+
+template<class T>
+void List<T>::push_front(T data)
+{
+	head = new Node<T>(data, head);
+	size++;
+
 }
 
 template<class T>
