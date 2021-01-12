@@ -19,6 +19,7 @@ public:
 	void push_front(T data);
 	void insert(T data, int index);
 	void removeAt(int index);
+	void pop_back();
 	T& operator [](const int index);
 private:
 	template <class T>
@@ -119,8 +120,6 @@ void List<T>::insert(T data, int index)
 		size++;
 	}
 
-	
-	
 }
 
 template<class T>
@@ -146,6 +145,12 @@ void List<T>::removeAt(int index)
 		size--;
 	}	
 	
+}
+
+template<class T>
+void List<T>::pop_back()
+{
+	removeAt(size - 1);
 }
 
 template<class T>
@@ -192,7 +197,7 @@ int main()
 
 
 	cout << endl;
-	lst.removeAt(0);
+	lst.pop_back();
 	cout << lst.GetSize() << endl << endl;
 
 
