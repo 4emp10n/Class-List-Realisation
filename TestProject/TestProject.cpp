@@ -17,6 +17,7 @@ public:
 	void pop_front();
 	void clear();
 	void push_front(T data);
+	void insert(T data, int index);
 	T& operator [](const int index);
 private:
 	template <class T>
@@ -94,6 +95,31 @@ void List<T>::push_front(T data)
 	head = new Node<T>(data, head);
 	size++;
 
+}
+
+template<class T>
+void List<T>::insert(T data, int index)
+{
+	if (index == 0)
+	{
+		push_front(data);
+	}
+	else
+	{
+		Node<T>* previous = this->head;
+
+		for (int i = 0; i < index - 1; i++)
+		{
+			previous = previous->pNext;
+		}
+
+		Node<T>* newNode = new Node<T>(data, previous->pNext);
+		previous->pNext = newNode;
+		delete previous;
+	}
+
+	size++;
+	
 }
 
 template<class T>
