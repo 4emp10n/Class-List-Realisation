@@ -115,7 +115,7 @@ void List<T>::insert(T data, int index)
 
 		Node<T>* newNode = new Node<T>(data, previous->pNext);
 		previous->pNext = newNode;
-		delete previous;
+		
 	}
 
 	size++;
@@ -155,7 +155,7 @@ int main()
 	}
 	
 	cout << endl;
-	lst.pop_front();
+	lst.insert(2, 2);
 	cout << lst.GetSize() << endl << endl;
 	
 
@@ -164,10 +164,7 @@ int main()
 		cout << lst[i] << endl;
 	}
 
-	lst.clear();
-	cout << endl;
-
-	cout<<lst.GetSize();
+	
 
 
 
