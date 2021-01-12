@@ -18,6 +18,7 @@ public:
 	void clear();
 	void push_front(T data);
 	void insert(T data, int index);
+	void removeAt(int index);
 	T& operator [](const int index);
 private:
 	template <class T>
@@ -115,10 +116,35 @@ void List<T>::insert(T data, int index)
 
 		Node<T>* newNode = new Node<T>(data, previous->pNext);
 		previous->pNext = newNode;
-		
+		size++;
 	}
 
-	size++;
+	
+	
+}
+
+template<class T>
+void List<T>::removeAt(int index)
+{
+	if (index == 0)
+	{
+		pop_front();
+	}
+	else
+	{
+		Node<T>* previous = this->head;
+
+		for (int i = 0; i < index - 1; i++)
+		{
+			previous = previous->pNext;
+		}
+
+		Node <T>* temp = previous->pNext;
+		previous->pNext = temp->pNext;
+
+		delete temp;
+		size--;
+	}	
 	
 }
 
@@ -158,6 +184,17 @@ int main()
 	lst.insert(2, 2);
 	cout << lst.GetSize() << endl << endl;
 	
+
+	for (int i = 0; i < lst.GetSize(); i++)
+	{
+		cout << lst[i] << endl;
+	}
+
+
+	cout << endl;
+	lst.removeAt(0);
+	cout << lst.GetSize() << endl << endl;
+
 
 	for (int i = 0; i < lst.GetSize(); i++)
 	{
